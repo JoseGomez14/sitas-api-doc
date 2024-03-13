@@ -1,0 +1,366 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "SITAS API",
+    "description": "This API expose endpoints for SITAS Airline System",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "Server URL in Development environment"
+    },
+    {
+      "url": "https://sitas.udea.edu.co",
+      "description": "Server URL in Production environment"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Flight Management",
+      "description": "CRUD operations for flights"
+    }
+  ],
+  "paths": {
+    "/manage/flights": {
+      "get": {
+        "tags": ["Flight Management"],
+        "summary": "Get all flights",
+        "description": "Get all flights",
+        "operationId": "getMethodName",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FlightDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Flight Management"],
+        "summary": "Create a new flight",
+        "description": "Create a new flight",
+        "operationId": "postMethodName",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FlightDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Flight created",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/FlightDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/manage/flights/{id}": {
+      "get": {
+        "tags": ["Flight Management"],
+        "summary": "Returns only one flight by id",
+        "description": "Returns only one flight by id",
+        "operationId": "getMethodNameById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/FlightDTO"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Flight Management"],
+        "summary": "Delete flight by id",
+        "description": "Delete flight by id",
+        "operationId": "deleteMethodName",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/FlightDTO"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": ["Flight Management"],
+        "summary": "Update flight by id",
+        "description": "Update flight by id",
+        "operationId": "putMethodName",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FlightDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/FlightDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AirplaneModeloDTO": {
+        "required": ["id"],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "family": {
+            "type": "string"
+          },
+          "capacity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "cargoCapacity": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "AirportDTO": {
+        "required": ["id"],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "runways": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "FlightDTO": {
+        "required": [
+          "basePrice",
+          "flightNumber",
+          "id",
+          "scales",
+          "surcharge",
+          "taxPercent"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "The flight id",
+            "format": "int64",
+            "example": 1
+          },
+          "flightNumber": {
+            "type": "string",
+            "description": "The flight number",
+            "example": "SA1521"
+          },
+          "basePrice": {
+            "type": "number",
+            "description": "The base price of the flight",
+            "format": "double",
+            "example": 1000000
+          },
+          "taxPercent": {
+            "type": "number",
+            "description": "The tax percent of the flight",
+            "format": "double",
+            "example": 0.19
+          },
+          "surcharge": {
+            "type": "number",
+            "description": "The surcharge of the flight",
+            "format": "double",
+            "example": 0.1
+          },
+          "scales": {
+            "maxItems": 10,
+            "minItems": 1,
+            "type": "array",
+            "description": "The scales of the flight",
+            "example": [
+              {
+                "id": "1",
+                "airplaneModel": {
+                  "id": "A320-200",
+                  "family": "Boeing 737",
+                  "capacity": 150,
+                  "cargoCapacity": 1500
+                },
+                "originAirport": {
+                  "id": "BOG",
+                  "name": "El Dorado",
+                  "type": "International",
+                  "city": "Bogotá",
+                  "country": "Colombia",
+                  "runways": 3
+                },
+                "destinationAirport": {
+                  "id": "MDE",
+                  "name": "José María Córdova",
+                  "type": "International",
+                  "city": "Medellín",
+                  "country": "Colombia",
+                  "runways": 2
+                },
+                "departureDate": "2024-12-30 23:59:59",
+                "arrivalDate": "2024-12-31 23:59:59"
+              }
+            ],
+            "items": {
+              "$ref": "#/components/schemas/ScaleDTO"
+            }
+          }
+        }
+      },
+      "ScaleDTO": {
+        "required": [
+          "airplaneModel",
+          "arrivalDate",
+          "departureDate",
+          "destinationAirport",
+          "originAirport"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "airplaneModel": {
+            "$ref": "#/components/schemas/AirplaneModeloDTO"
+          },
+          "originAirport": {
+            "$ref": "#/components/schemas/AirportDTO"
+          },
+          "destinationAirport": {
+            "$ref": "#/components/schemas/AirportDTO"
+          },
+          "departureDate": {
+            "pattern": "yyyy-MM-dd HH:mm:ss",
+            "type": "string",
+            "format": "date-time"
+          },
+          "arrivalDate": {
+            "pattern": "yyyy-MM-dd HH:mm:ss",
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "description": "The scales of the flight",
+        "example": [
+          {
+            "id": "1",
+            "airplaneModel": {
+              "id": "A320-200",
+              "family": "Boeing 737",
+              "capacity": 150,
+              "cargoCapacity": 1500
+            },
+            "originAirport": {
+              "id": "BOG",
+              "name": "El Dorado",
+              "type": "International",
+              "city": "Bogotá",
+              "country": "Colombia",
+              "runways": 3
+            },
+            "destinationAirport": {
+              "id": "MDE",
+              "name": "José María Córdova",
+              "type": "International",
+              "city": "Medellín",
+              "country": "Colombia",
+              "runways": 2
+            },
+            "departureDate": "2024-12-30 23:59:59",
+            "arrivalDate": "2024-12-31 23:59:59"
+          }
+        ]
+      }
+    }
+  }
+}
